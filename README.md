@@ -15,7 +15,7 @@ import OtpAutoFill from "react-native-otp-auto-fill";
 
 // ...
 
-const result = await OtpAutoFill.multiply(3, 7);
+const result = await OtpAutoFill.listen();
 ```
 
 ## Contributing
