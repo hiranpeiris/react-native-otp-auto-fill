@@ -1,12 +1,19 @@
-import { requireNativeComponent, ViewStyle } from 'react-native';
+import {
+  requireNativeComponent,
+  ViewStyle,
+  NativeSyntheticEvent,
+} from 'react-native';
 
 type OtpAutoFillProps = {
-  color: string;
-  style: ViewStyle;
+  color?: string;
+  space?: number;
+  fontSize?: number;
+  length?: number;
+  style?: ViewStyle;
+  onComplete: (event: NativeSyntheticEvent<{ code: string }>) => void;
 };
 
-export const OtpAutoFillViewManager = requireNativeComponent<OtpAutoFillProps>(
-'OtpAutoFillView'
-);
+export const OtpAutoFillViewManager =
+  requireNativeComponent<OtpAutoFillProps>('OtpAutoFillView');
 
 export default OtpAutoFillViewManager;

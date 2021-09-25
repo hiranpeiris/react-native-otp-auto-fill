@@ -1,12 +1,17 @@
 import * as React from 'react';
-
-import { StyleSheet, View } from 'react-native';
+import { Alert, NativeSyntheticEvent, StyleSheet, View } from 'react-native';
 import OtpAutoFillViewManager from 'react-native-otp-auto-fill';
 
 export default function App() {
+  const handleComplete = ({
+    nativeEvent: { code },
+  }: NativeSyntheticEvent<{ code: string }>) => {
+    Alert.alert('OTP Code Received!', code);
+  };
+
   return (
     <View style={styles.container}>
-      <OtpAutoFillViewManager color="#32a852" style={styles.box} />
+      <OtpAutoFillViewManager onComplete={handleComplete} style={styles.box} />
     </View>
   );
 }
@@ -18,8 +23,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   box: {
-    width: 60,
-    height: 60,
+    width: 300,
+    height: 55,
     marginVertical: 20,
+    borderColor: 'red',
+    borderWidth: 1,
   },
 });
