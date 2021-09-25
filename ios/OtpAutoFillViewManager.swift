@@ -34,6 +34,8 @@ class OtpAutoFillView : UIView, UITextFieldDelegate {
         }
     }
 
+    @objc var onComplete: RCTDirectEventBlock?
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -77,8 +79,11 @@ class OtpAutoFillView : UIView, UITextFieldDelegate {
         let newString: NSString =
             currentString.replacingCharacters(in: range, with: string) as NSString
         
+        // Call the onComplete event when OTP has been entered
         if (newString.length == length.intValue) {
-            // onComplete(newString);
+            if onComplete != nil {
+                onComplete!(["code": newString])
+            }
         }
         
         return newString.length <= length.intValue
