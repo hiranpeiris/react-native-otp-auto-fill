@@ -8,7 +8,7 @@ class OtpAutoFillViewManager: RCTViewManager {
 
 class OtpAutoFillView : UIView, UITextFieldDelegate {
     
-    var textField = UITextField()
+    var textField: UITextField!
 
     @objc var color: String = "#000000" {
         didSet {
@@ -34,8 +34,21 @@ class OtpAutoFillView : UIView, UITextFieldDelegate {
         }
     }
 
-    override func draw(_ rect: CGRect) {
-        textField = UITextField(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height))
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupView()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupView()
+    }
+    
+    func setupView() {
+        // Text field configs
+        textField = UITextField()
+        textField.delegate = self
+        textField.translatesAutoresizingMaskIntoConstraints = false
         textField.textColor = hexStringToUIColor(hexColor: color)
         textField.defaultTextAttributes.updateValue(space, forKey: NSAttributedString.Key.kern)
         textField.font = UIFont.systemFont(ofSize: CGFloat(fontSize), weight: .heavy)
@@ -43,23 +56,35 @@ class OtpAutoFillView : UIView, UITextFieldDelegate {
         textField.keyboardType = .numberPad
         textField.textAlignment = .center
 
+        // Add text field to UIView
         self.addSubview(textField)
-        textField.delegate = self
+
+        // Make text field to take whole UIView size
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: self.topAnchor),
+            textField.leftAnchor.constraint(equalTo: self.leftAnchor),
+            textField.rightAnchor.constraint(equalTo: self.rightAnchor),
+            textField.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+        ])
+
+        // Open keyboard
         textField.becomeFirstResponder()
     }
 
+    // Text length limit logics
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentString: NSString = (textField.text ?? "") as NSString
         let newString: NSString =
             currentString.replacingCharacters(in: range, with: string) as NSString
         
         if (newString.length == length.intValue) {
-            print("Number: \(newString)");
+            // onComplete(newString);
         }
         
         return newString.length <= length.intValue
     }
 
+    // Color converter helper
     func hexStringToUIColor(hexColor: String) -> UIColor {
         let stringScanner = Scanner(string: hexColor)
 
