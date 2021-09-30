@@ -1,13 +1,16 @@
 package com.reactnativeotpautofill;
 
-import android.graphics.Color;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
+
+import java.util.Map;
 
 public class OtpAutoFillViewManager extends SimpleViewManager<View> {
     public static final String REACT_CLASS = "OtpAutoFillView";
@@ -21,11 +24,32 @@ public class OtpAutoFillViewManager extends SimpleViewManager<View> {
     @Override
     @NonNull
     public View createViewInstance(ThemedReactContext reactContext) {
-        return new View(reactContext);
+        return new OtpView(reactContext);
     }
 
     @ReactProp(name = "color")
-    public void setColor(View view, String color) {
-        view.setBackgroundColor(Color.parseColor(color));
+    public void setColor(OtpView view, String color) {
+      view.setOtpTextColor(color);
+    }
+
+    @ReactProp(name = "space")
+    public void setSpace(OtpView view, float space) {
+      view.setOtpTextSpace(space);
+    }
+
+    @ReactProp(name = "fontSize")
+    public void setFontSize(OtpView view, float fontSize) {
+      view.setOtpTextFontSize(fontSize);
+    }
+
+    @ReactProp(name = "length")
+    public void setFontSize(OtpView view, int length) {
+      view.setOtpTextLength(length);
+    }
+
+    @Nullable
+    @Override
+    public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
+      return MapBuilder.of("onComplete", MapBuilder.of("registrationName", "onComplete"));
     }
 }
