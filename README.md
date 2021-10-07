@@ -1,6 +1,14 @@
 # react-native-otp-auto-fill
 
-Auto fill OTP library for React Native
+Auto fill OTP library for React Native.
+User don't have to enter the OTP Code manually... :)
+This library reads the OTP Code from SMS and fill it Automatically in the Text Field.
+
+Open for more contributors...
+
+Support Only: 
+- iOS 12.0 or above. ( iOS Pods > platform :ios, '12.0' )
+- Android 5.0 (API Level 21) or above. ( Android Gradle > minSdkVersion = 21 )
 
 ## Installation
 
