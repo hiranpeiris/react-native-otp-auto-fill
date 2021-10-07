@@ -3,45 +3,39 @@ package com.reactnativeotpautofill;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
+import android.provider.Telephony;
+import android.telephony.SmsMessage;
+import android.widget.EditText;
 
-import com.google.android.gms.auth.api.phone.SmsRetriever;
-import com.google.android.gms.common.api.CommonStatusCodes;
-import com.google.android.gms.common.api.Status;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class OtpBroadcastReceiver extends BroadcastReceiver {
 
-  private OtpView otpView;
+  private static EditText editText;
 
-  public OtpBroadcastReceiver(OtpView otpView) {
-    this.otpView = otpView;
+  public void setEditText(EditText editText)
+  {
+    OtpBroadcastReceiver.editText = editText;
   }
 
   @Override
   public void onReceive(Context context, Intent intent) {
-    String o = intent.getAction();
-    if (SmsRetriever.SMS_RETRIEVED_ACTION.equals(o)) {
-      Bundle extras = intent.getExtras();
-      Status status = (Status) extras.get(SmsRetriever.EXTRA_STATUS);
+    SmsMessage[] messages = Telephony.Sms.Intents.getMessagesFromIntent(intent);
 
-      if (status == null) {
-        return;
+    for (SmsMessage sms : messages)
+    {
+      String message = sms.getMessageBody();
+      Pattern p = Pattern.compile("\\d+");
+      Matcher m = p.matcher(message);
+
+      ArrayList<String> codes = new ArrayList<String>();
+      while(m.find()) {
+        codes.add(m.group());
       }
 
-      switch (status.getStatusCode()) {
-        case CommonStatusCodes.SUCCESS:
-          // Get SMS message contents
-          String message = (String) extras.get(SmsRetriever.EXTRA_SMS_MESSAGE);
-          otpView.receiveMessage(message);
-          if (message != null) {
-            Log.d("SMS", message);
-          }
-          break;
-        case CommonStatusCodes.TIMEOUT:
-          Log.d("SMS", "Timeout error");
-          break;
-      }
+      editText.setText(codes.get(0));
     }
   }
 }

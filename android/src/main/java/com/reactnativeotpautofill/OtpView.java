@@ -1,35 +1,26 @@
 package com.reactnativeotpautofill;
 
-import android.content.BroadcastReceiver;
-import android.content.IntentFilter;
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
-import com.google.android.gms.auth.api.phone.SmsRetriever;
-import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 
-public class OtpView extends LinearLayout implements LifecycleEventListener {
-  private static final String TAG = OtpView.class.getSimpleName();
+public class OtpView extends LinearLayout {
   private ThemedReactContext themedContext;
-  private OtpBroadcastReceiver otpReceiver;
   private EditText numberText;
   private int length;
-  private boolean isReceiverRegistered = false;
 
   public OtpView(ThemedReactContext context) {
     super(context);
@@ -52,18 +43,6 @@ public class OtpView extends LinearLayout implements LifecycleEventListener {
   public void setOtpTextLength(int length) {
     numberText.setFilters(new InputFilter[] {new InputFilter.LengthFilter(length)});
     this.length = length;
-  }
-
-  void receiveMessage(String message) {
-    if (themedContext == null) {
-      return;
-    }
-
-    if (!themedContext.hasActiveCatalystInstance()) {
-      return;
-    }
-
-    numberText.setText(message);
   }
 
   private void setup() {
@@ -94,63 +73,20 @@ public class OtpView extends LinearLayout implements LifecycleEventListener {
       public void afterTextChanged(Editable s) { }
     });
 
-    otpReceiver = new OtpBroadcastReceiver(this);
-
-    SmsRetrieverClient client = SmsRetriever.getClient(themedContext);
-    Task<Void> task = client.startSmsRetriever();
-    task.addOnSuccessListener(new OnSuccessListener<Void>() {
-      @Override
-      public void onSuccess(Void aVoid) {
-        Log.e(TAG, "started sms listener");
-      }
-    });
-
-    task.addOnFailureListener(new OnFailureListener() {
-      @Override
-      public void onFailure(@NonNull Exception e) {
-        Log.e(TAG, "Could not start sms listener", e);
-      }
-    });
+    requestSMSPermission();
+    new OtpBroadcastReceiver().setEditText(numberText);
   }
 
-  private void registerReceiverIfNecessary(BroadcastReceiver receiver) {
-    if (themedContext.getCurrentActivity() == null) return;
-    try {
-      themedContext.getCurrentActivity().registerReceiver(
-        receiver,
-        new IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION)
-      );
-      Log.d(TAG, "Receiver Registered");
-      isReceiverRegistered = true;
-    } catch (Exception e) {
-      e.printStackTrace();
+  private void requestSMSPermission()
+  {
+    String permission = Manifest.permission.RECEIVE_SMS;
+
+    int grant = ContextCompat.checkSelfPermission(getContext(), permission);
+    if (grant != PackageManager.PERMISSION_GRANTED)
+    {
+      String[] permission_list = new String[1];
+      permission_list[0] = permission;
+      ActivityCompat.requestPermissions(themedContext.getCurrentActivity(), permission_list,1);
     }
-  }
-
-  private void unregisterReceiver(BroadcastReceiver receiver) {
-    if (isReceiverRegistered && themedContext.getCurrentActivity() != null && receiver != null) {
-      try {
-        themedContext.getCurrentActivity().unregisterReceiver(receiver);
-        Log.d(TAG, "Receiver UnRegistered");
-        isReceiverRegistered = false;
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
-  }
-
-  @Override
-  public void onHostResume() {
-    registerReceiverIfNecessary(otpReceiver);
-  }
-
-  @Override
-  public void onHostPause() {
-    unregisterReceiver(otpReceiver);
-  }
-
-  @Override
-  public void onHostDestroy() {
-    unregisterReceiver(otpReceiver);
   }
 }

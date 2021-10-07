@@ -43,7 +43,7 @@ public class OtpAutoFillViewManager extends SimpleViewManager<View> {
     }
 
     @ReactProp(name = "length")
-    public void setFontSize(OtpView view, int length) {
+    public void setTextLength(OtpView view, int length) {
       view.setOtpTextLength(length);
     }
 
