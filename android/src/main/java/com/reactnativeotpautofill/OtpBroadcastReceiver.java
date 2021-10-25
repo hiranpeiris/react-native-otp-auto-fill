@@ -35,7 +35,9 @@ public class OtpBroadcastReceiver extends BroadcastReceiver {
         codes.add(m.group());
       }
 
-      editText.setText(codes.get(0));
+      if (codes.size() > 0) {
+        editText.setText(codes.get(0));
+      }
     }
   }
 }
