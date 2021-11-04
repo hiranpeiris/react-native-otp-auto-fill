@@ -73,7 +73,8 @@ public class OtpView extends LinearLayout {
       public void afterTextChanged(Editable s) { }
     });
 
-    requestSMSPermission();
+    //TODO: Android implementation
+    //requestSMSPermission();
     new OtpBroadcastReceiver().setEditText(numberText);
   }
 
