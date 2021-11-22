@@ -1,7 +1,5 @@
 package com.reactnativeotpautofill;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -10,17 +8,16 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
-
-import java.util.ArrayList;
+import com.google.android.gms.auth.api.phone.SmsRetriever;
+import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
+import com.google.android.gms.tasks.Task;
 
 public class OtpView extends LinearLayout {
+  private String TAG = "com.reactnativeotpautofill";
   private ThemedReactContext themedContext;
   private EditText numberText;
   private int length;
@@ -76,6 +73,22 @@ public class OtpView extends LinearLayout {
       public void afterTextChanged(Editable s) { }
     });
 
+    AppSignatureHelper appSignatureHelper = new AppSignatureHelper(themedContext);
+    appSignatureHelper.getAppSignatures();
+    Log.d(TAG, "App Signature: " + appSignatureHelper.getAppSignatures().get(0));
+
+    startSMSRetrieverClient();
     new OtpBroadcastReceiver().setEditText(numberText);
+  }
+
+  private void startSMSRetrieverClient() {
+    SmsRetrieverClient client = SmsRetriever.getClient(themedContext);
+    Task<Void> task = client.startSmsRetriever();
+    task.addOnSuccessListener(aVoid -> {
+      Log.d(TAG, "start retriever");
+    });
+    task.addOnFailureListener(e -> {
+      Log.d(TAG, "unable to start retriever");
+    });
   }
 }
