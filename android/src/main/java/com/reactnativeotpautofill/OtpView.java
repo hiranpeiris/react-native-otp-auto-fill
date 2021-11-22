@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -16,6 +17,8 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
+
+import java.util.ArrayList;
 
 public class OtpView extends LinearLayout {
   private ThemedReactContext themedContext;
@@ -73,20 +76,6 @@ public class OtpView extends LinearLayout {
       public void afterTextChanged(Editable s) { }
     });
 
-    requestSMSPermission();
     new OtpBroadcastReceiver().setEditText(numberText);
-  }
-
-  private void requestSMSPermission()
-  {
-    String permission = Manifest.permission.RECEIVE_SMS;
-
-    int grant = ContextCompat.checkSelfPermission(getContext(), permission);
-    if (grant != PackageManager.PERMISSION_GRANTED)
-    {
-      String[] permission_list = new String[1];
-      permission_list[0] = permission;
-      ActivityCompat.requestPermissions(themedContext.getCurrentActivity(), permission_list,1);
-    }
   }
 }

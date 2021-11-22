@@ -53,9 +53,8 @@ repositories {
 }
 
 dependencies {
-    def googlePlayServicesVersion = safeExtGet('googlePlayServicesVersion', safeExtGet('playServiceVersion', '+'))
-
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
-    implementation "com.google.android.gms:play-services-auth:$googlePlayServicesVersion"
+    implementation 'com.google.android.gms:play-services-auth:19.2.0'
+    implementation 'com.google.android.gms:play-services-auth-api-phone:17.5.1'
 }
