@@ -76,7 +76,7 @@ Your ExampleApp code is: 8468
 4H8FDxP/hbp
 
 ## Note
-Define the length od OTP. This is a must.
+Define the length of OTP code. This is a must.
 
 eg:
 
