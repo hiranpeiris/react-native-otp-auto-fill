@@ -26,7 +26,6 @@ public class OtpBroadcastReceiver extends BroadcastReceiver {
     if (SmsRetriever.SMS_RETRIEVED_ACTION.equals(intent.getAction())) {
       Bundle extras = intent.getExtras();
       if (extras != null) {
-        Status status = (Status) extras.get(SmsRetriever.EXTRA_STATUS);
         String message = extras.getString(SmsRetriever.EXTRA_SMS_MESSAGE);
         Pattern p = Pattern.compile("\\d+");
         Matcher m = p.matcher(message);

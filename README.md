@@ -34,7 +34,7 @@ export default function App() {
   const handleOnAndroidSignature = ({
     nativeEvent: { code },
   }: NativeSyntheticEvent<{ code: string }>) => {
-    console.log('Android Signature key for SMS body:', code);
+    console.log('Android Signature Key for SMS body:', code);
   };
 
   return (
@@ -43,6 +43,7 @@ export default function App() {
         onComplete={handleComplete}
         onAndroidSignature={handleOnAndroidSignature}
         style={styles.box}
+        length={4} // Define the length od OTP. This is a must
       />
     </View>
   );
@@ -73,6 +74,20 @@ Put that code "4H8FDxP/hbp" in backend SMS body like below.
 Your ExampleApp code is: 8468
 
 4H8FDxP/hbp
+
+## Note
+Define the length od OTP. This is a must.
+
+eg:
+
+```js
+<OtpAutoFillViewManager
+  onComplete={handleComplete}
+  onAndroidSignature={handleOnAndroidSignature}
+  style={styles.box}
+  length={4} // Define the length od OTP. This is a must
+/>
+```
 
 
 ## Contributing

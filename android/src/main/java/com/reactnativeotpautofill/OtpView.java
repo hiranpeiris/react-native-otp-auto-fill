@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
@@ -52,7 +53,7 @@ public class OtpView extends LinearLayout {
     setOtpTextColor("#000000");
     setOtpTextSpace(1);
     setOtpTextFontSize(24);
-    setOtpTextLength(6);
+    setOtpTextLength(4);
 
     numberText.addTextChangedListener(new TextWatcher() {
 
@@ -64,7 +65,7 @@ public class OtpView extends LinearLayout {
         if (s.length() >= length) {
           WritableMap args = Arguments.createMap();
           args.putString("code", s.toString());
-          themedContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), "onComplete", args);
+          themedContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), "complete", args);
         }
       }
 
@@ -84,7 +85,7 @@ public class OtpView extends LinearLayout {
       AppSignatureHelper appSignatureHelper = new AppSignatureHelper(themedContext);
       WritableMap args = Arguments.createMap();
       args.putString("code", appSignatureHelper.getAppSignatures().get(0));
-      themedContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), "onAndroidSignature", args);
+      themedContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), "androidSignature", args);
     });
     task.addOnFailureListener(e -> {
       Log.d(TAG, "unable to start retriever");
