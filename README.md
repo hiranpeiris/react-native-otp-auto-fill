@@ -68,9 +68,10 @@ Check your console logs:
 You will get "Android Signature key for SMS body: 4H8FDxP/hbp"
 Put that code "4H8FDxP/hbp" in backend SMS body like below.
 
-example SMS body:
-Your ExampleApp code is: 8468
-4H8FDxP/hbp
+## Example SMS body:
+
+### Your ExampleApp code is: 8468
+### 4H8FDxP/hbp
 
 ## Contributing
 
