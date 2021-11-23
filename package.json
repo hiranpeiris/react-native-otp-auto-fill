@@ -1,6 +1,6 @@
 {
   "name": "react-native-otp-auto-fill",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "Auto fill OTP library for React Native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
