@@ -70,8 +70,9 @@ Put that code "4H8FDxP/hbp" in backend SMS body like below.
 
 ## Example SMS body:
 
-#### Your ExampleApp code is: 8468
-#### 4H8FDxP/hbp
+Your ExampleApp code is: 8468
+
+4H8FDxP/hbp
 
 
 ## Contributing
