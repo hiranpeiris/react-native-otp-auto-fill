@@ -50,6 +50,8 @@ public class OtpAutoFillViewManager extends SimpleViewManager<View> {
     @Nullable
     @Override
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
-      return MapBuilder.of("onComplete", MapBuilder.of("registrationName", "onComplete"));
+      return MapBuilder.of(
+        "onComplete", MapBuilder.of("registrationName", "onComplete"),
+        "onAndroidSignature", MapBuilder.of("registrationName", "onAndroidSignature"));
     }
 }

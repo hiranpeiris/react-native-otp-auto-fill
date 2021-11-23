@@ -9,9 +9,20 @@ export default function App() {
     Alert.alert('OTP Code Received!', code);
   };
 
+  // This is only needed once to get the Android Signature key for SMS body
+  const handleOnAndroidSignature = ({
+    nativeEvent: { code },
+  }: NativeSyntheticEvent<{ code: string }>) => {
+    console.log('Android Signature Key for SMS body:', code);
+  };
+
   return (
     <View style={styles.container}>
-      <OtpAutoFillViewManager onComplete={handleComplete} style={styles.box} />
+      <OtpAutoFillViewManager
+        onComplete={handleComplete}
+        onAndroidSignature={handleOnAndroidSignature}
+        style={styles.box}
+      />
     </View>
   );
 }

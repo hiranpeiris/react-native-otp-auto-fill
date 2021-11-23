@@ -11,6 +11,7 @@ type OtpAutoFillProps = {
   length?: number;
   style?: ViewStyle;
   onComplete: (event: NativeSyntheticEvent<{ code: string }>) => void;
+  onAndroidSignature?: (event: NativeSyntheticEvent<{ code: string }>) => void;
 };
 
 export const OtpAutoFillViewManager =

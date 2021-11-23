@@ -30,9 +30,20 @@ export default function App() {
     Alert.alert('OTP Code Received!', code);
   };
 
+  // This is only needed once to get the Android Signature key for SMS body
+  const handleOnAndroidSignature = ({
+    nativeEvent: { code },
+  }: NativeSyntheticEvent<{ code: string }>) => {
+    console.log('Android Signature key for SMS body:', code);
+  };
+
   return (
     <View style={styles.container}>
-      <OtpAutoFillViewManager onComplete={handleComplete} style={styles.box} />
+      <OtpAutoFillViewManager
+        onComplete={handleComplete}
+        onAndroidSignature={handleOnAndroidSignature}
+        style={styles.box}
+      />
     </View>
   );
 }
@@ -52,6 +63,14 @@ const styles = StyleSheet.create({
   },
 });
 ```
+
+Check your console logs:
+You will get "Android Signature key for SMS body: 4H8FDxP/hbp"
+Put that code "4H8FDxP/hbp" in backend SMS body like below.
+
+example SMS body:
+Your ExampleApp code is: 8468
+4H8FDxP/hbp
 
 ## Contributing
 

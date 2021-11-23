@@ -64,7 +64,6 @@ public class OtpView extends LinearLayout {
         if (s.length() >= length) {
           WritableMap args = Arguments.createMap();
           args.putString("code", s.toString());
-
           themedContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), "onComplete", args);
         }
       }
@@ -72,10 +71,6 @@ public class OtpView extends LinearLayout {
       @Override
       public void afterTextChanged(Editable s) { }
     });
-
-    AppSignatureHelper appSignatureHelper = new AppSignatureHelper(themedContext);
-    appSignatureHelper.getAppSignatures();
-    Log.d(TAG, "App Signature: " + appSignatureHelper.getAppSignatures().get(0));
 
     startSMSRetrieverClient();
     new OtpBroadcastReceiver().setEditText(numberText);
@@ -86,6 +81,10 @@ public class OtpView extends LinearLayout {
     Task<Void> task = client.startSmsRetriever();
     task.addOnSuccessListener(aVoid -> {
       Log.d(TAG, "start retriever");
+      AppSignatureHelper appSignatureHelper = new AppSignatureHelper(themedContext);
+      WritableMap args = Arguments.createMap();
+      args.putString("code", appSignatureHelper.getAppSignatures().get(0));
+      themedContext.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), "onAndroidSignature", args);
     });
     task.addOnFailureListener(e -> {
       Log.d(TAG, "unable to start retriever");
