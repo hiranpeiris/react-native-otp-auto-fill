@@ -43,7 +43,7 @@ export default function App() {
         onComplete={handleComplete}
         onAndroidSignature={handleOnAndroidSignature}
         style={styles.box}
-        length={4} // Define the length od OTP. This is a must
+        length={4} // Define the length of OTP code. This is a must.
       />
     </View>
   );
@@ -85,7 +85,7 @@ eg:
   onComplete={handleComplete}
   onAndroidSignature={handleOnAndroidSignature}
   style={styles.box}
-  length={4} // Define the length od OTP. This is a must
+  length={4} // Define the length of OTP code. This is a must.
 />
 ```
 
